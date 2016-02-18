@@ -38,7 +38,7 @@ GLuint OpenGLShaderProgram::getProgramID() const noexcept
     jassert (OpenGLHelpers::isContextActive());
 
     if (programID == 0)
-        programID = context.extensions.glCreateProgram();
+        programID = glCreateProgram();
 
     return programID;
 }
@@ -47,7 +47,7 @@ void OpenGLShaderProgram::release() noexcept
 {
     if (programID != 0)
     {
-        context.extensions.glDeleteProgram (programID);
+        glDeleteProgram (programID);
         programID = 0;
     }
 }
@@ -60,21 +60,21 @@ double OpenGLShaderProgram::getLanguageVersion()
 
 bool OpenGLShaderProgram::addShader (const String& code, GLenum type)
 {
-    GLuint shaderID = context.extensions.glCreateShader (type);
+    GLuint shaderID = glCreateShader (type);
 
     const GLchar* c = code.toRawUTF8();
-    context.extensions.glShaderSource (shaderID, 1, &c, nullptr);
+    glShaderSource (shaderID, 1, &c, nullptr);
 
-    context.extensions.glCompileShader (shaderID);
+    glCompileShader (shaderID);
 
-    GLint status = GL_FALSE;
-    context.extensions.glGetShaderiv (shaderID, GL_COMPILE_STATUS, &status);
+    GLint status = 0;
+    glGetShaderiv (shaderID, GL_COMPILE_STATUS, &status);
 
-    if (status == GL_FALSE)
+    if (status == 0)
     {
         GLchar infoLog [16384];
         GLsizei infoLogLength = 0;
-        context.extensions.glGetShaderInfoLog (shaderID, sizeof (infoLog), &infoLogLength, infoLog);
+        glGetShaderInfoLog (shaderID, sizeof (infoLog), &infoLogLength, infoLog);
         errorLog = String (infoLog, (size_t) infoLogLength);
 
        #if JUCE_DEBUG && ! JUCE_DONT_ASSERT_ON_GLSL_COMPILE_ERROR
@@ -87,8 +87,8 @@ bool OpenGLShaderProgram::addShader (const String& code, GLenum type)
         return false;
     }
 
-    context.extensions.glAttachShader (getProgramID(), shaderID);
-    context.extensions.glDeleteShader (shaderID);
+    glAttachShader (getProgramID(), shaderID);
+    glDeleteShader (shaderID);
     JUCE_CHECK_OPENGL_ERROR
     return true;
 }
@@ -103,16 +103,16 @@ bool OpenGLShaderProgram::link() noexcept
 
     GLuint progID = getProgramID();
 
-    context.extensions.glLinkProgram (progID);
+    glLinkProgram (progID);
 
-    GLint status = GL_FALSE;
-    context.extensions.glGetProgramiv (progID, GL_LINK_STATUS, &status);
+    GLint status = 0;
+    glGetProgramiv (progID, GL_LINK_STATUS, &status);
 
-    if (status == GL_FALSE)
+    if (status == 0)
     {
         GLchar infoLog [16384];
         GLsizei infoLogLength = 0;
-        context.extensions.glGetProgramInfoLog (progID, sizeof (infoLog), &infoLogLength, infoLog);
+        glGetProgramInfoLog (progID, sizeof (infoLog), &infoLogLength, infoLog);
         errorLog = String (infoLog, (size_t) infoLogLength);
 
        #if JUCE_DEBUG && ! JUCE_DONT_ASSERT_ON_GLSL_COMPILE_ERROR
@@ -124,7 +124,7 @@ bool OpenGLShaderProgram::link() noexcept
     }
 
     JUCE_CHECK_OPENGL_ERROR
-    return status != GL_FALSE;
+    return status != 0;
 }
 
 void OpenGLShaderProgram::use() const noexcept
@@ -132,7 +132,7 @@ void OpenGLShaderProgram::use() const noexcept
     // The shader program must have been successfully linked when this method is called!
     jassert (programID != 0);
 
-    context.extensions.glUseProgram (programID);
+    glUseProgram (programID);
 }
 
 GLint OpenGLShaderProgram::getUniformIDFromName (const char* uniformName) const noexcept
@@ -140,23 +140,23 @@ GLint OpenGLShaderProgram::getUniformIDFromName (const char* uniformName) const 
     // The shader program must be active when this method is called!
     jassert (programID != 0);
 
-    return (GLint) context.extensions.glGetUniformLocation (programID, uniformName);
+    return (GLint) glGetUniformLocation (programID, uniformName);
 }
 
-void OpenGLShaderProgram::setUniform (const char* name, GLfloat n1) noexcept                                       { context.extensions.glUniform1f  (getUniformIDFromName (name), n1); }
-void OpenGLShaderProgram::setUniform (const char* name, GLint n1) noexcept                                         { context.extensions.glUniform1i  (getUniformIDFromName (name), n1); }
-void OpenGLShaderProgram::setUniform (const char* name, GLfloat n1, GLfloat n2) noexcept                           { context.extensions.glUniform2f  (getUniformIDFromName (name), n1, n2); }
-void OpenGLShaderProgram::setUniform (const char* name, GLfloat n1, GLfloat n2, GLfloat n3) noexcept               { context.extensions.glUniform3f  (getUniformIDFromName (name), n1, n2, n3); }
-void OpenGLShaderProgram::setUniform (const char* name, GLfloat n1, GLfloat n2, GLfloat n3, float n4) noexcept     { context.extensions.glUniform4f  (getUniformIDFromName (name), n1, n2, n3, n4); }
-void OpenGLShaderProgram::setUniform (const char* name, GLint n1, GLint n2, GLint n3, GLint n4) noexcept           { context.extensions.glUniform4i  (getUniformIDFromName (name), n1, n2, n3, n4); }
-void OpenGLShaderProgram::setUniform (const char* name, const GLfloat* values, GLsizei numValues) noexcept         { context.extensions.glUniform1fv (getUniformIDFromName (name), numValues, values); }
-void OpenGLShaderProgram::setUniformMat2 (const char* name, const GLfloat* v, GLint num, GLboolean trns) noexcept  { context.extensions.glUniformMatrix2fv (getUniformIDFromName (name), num, trns, v); }
-void OpenGLShaderProgram::setUniformMat3 (const char* name, const GLfloat* v, GLint num, GLboolean trns) noexcept  { context.extensions.glUniformMatrix3fv (getUniformIDFromName (name), num, trns, v); }
-void OpenGLShaderProgram::setUniformMat4 (const char* name, const GLfloat* v, GLint num, GLboolean trns) noexcept  { context.extensions.glUniformMatrix4fv (getUniformIDFromName (name), num, trns, v); }
+void OpenGLShaderProgram::setUniform (const char* name, GLfloat n1) noexcept                                       { glUniform1f  (getUniformIDFromName (name), n1); }
+void OpenGLShaderProgram::setUniform (const char* name, GLint n1) noexcept                                         { glUniform1i  (getUniformIDFromName (name), n1); }
+void OpenGLShaderProgram::setUniform (const char* name, GLfloat n1, GLfloat n2) noexcept                           { glUniform2f  (getUniformIDFromName (name), n1, n2); }
+void OpenGLShaderProgram::setUniform (const char* name, GLfloat n1, GLfloat n2, GLfloat n3) noexcept               { glUniform3f  (getUniformIDFromName (name), n1, n2, n3); }
+void OpenGLShaderProgram::setUniform (const char* name, GLfloat n1, GLfloat n2, GLfloat n3, float n4) noexcept     { glUniform4f  (getUniformIDFromName (name), n1, n2, n3, n4); }
+void OpenGLShaderProgram::setUniform (const char* name, GLint n1, GLint n2, GLint n3, GLint n4) noexcept           { glUniform4i  (getUniformIDFromName (name), n1, n2, n3, n4); }
+void OpenGLShaderProgram::setUniform (const char* name, const GLfloat* values, GLsizei numValues) noexcept         { glUniform1fv (getUniformIDFromName (name), numValues, values); }
+void OpenGLShaderProgram::setUniformMat2 (const char* name, const GLfloat* v, GLint num, GLboolean trns) noexcept  { glUniformMatrix2fv (getUniformIDFromName (name), num, trns, v); }
+void OpenGLShaderProgram::setUniformMat3 (const char* name, const GLfloat* v, GLint num, GLboolean trns) noexcept  { glUniformMatrix3fv (getUniformIDFromName (name), num, trns, v); }
+void OpenGLShaderProgram::setUniformMat4 (const char* name, const GLfloat* v, GLint num, GLboolean trns) noexcept  { glUniformMatrix4fv (getUniformIDFromName (name), num, trns, v); }
 
 //==============================================================================
 OpenGLShaderProgram::Attribute::Attribute (const OpenGLShaderProgram& program, const char* name)
-    : attributeID ((GLuint) program.context.extensions.glGetAttribLocation (program.getProgramID(), name))
+    : attributeID ((GLuint) glGetAttribLocation (program.getProgramID(), name))
 {
    #if JUCE_DEBUG && ! JUCE_DONT_ASSERT_ON_GLSL_COMPILE_ERROR
     jassert ((GLint) attributeID >= 0);
@@ -165,21 +165,21 @@ OpenGLShaderProgram::Attribute::Attribute (const OpenGLShaderProgram& program, c
 
 //==============================================================================
 OpenGLShaderProgram::Uniform::Uniform (const OpenGLShaderProgram& program, const char* const name)
-    : uniformID (program.context.extensions.glGetUniformLocation (program.getProgramID(), name)), context (program.context)
+    : uniformID (glGetUniformLocation (program.getProgramID(), name)), context (program.context)
 {
    #if JUCE_DEBUG && ! JUCE_DONT_ASSERT_ON_GLSL_COMPILE_ERROR
     jassert (uniformID >= 0);
    #endif
 }
 
-void OpenGLShaderProgram::Uniform::set (GLfloat n1) const noexcept                                    { context.extensions.glUniform1f (uniformID, n1); }
-void OpenGLShaderProgram::Uniform::set (GLint n1) const noexcept                                      { context.extensions.glUniform1i (uniformID, n1); }
-void OpenGLShaderProgram::Uniform::set (GLfloat n1, GLfloat n2) const noexcept                        { context.extensions.glUniform2f (uniformID, n1, n2); }
-void OpenGLShaderProgram::Uniform::set (GLfloat n1, GLfloat n2, GLfloat n3) const noexcept            { context.extensions.glUniform3f (uniformID, n1, n2, n3); }
-void OpenGLShaderProgram::Uniform::set (GLfloat n1, GLfloat n2, GLfloat n3, float n4) const noexcept  { context.extensions.glUniform4f (uniformID, n1, n2, n3, n4); }
-void OpenGLShaderProgram::Uniform::set (GLint n1, GLint n2, GLint n3, GLint n4) const noexcept        { context.extensions.glUniform4i (uniformID, n1, n2, n3, n4); }
-void OpenGLShaderProgram::Uniform::set (const GLfloat* values, GLsizei numValues) const noexcept      { context.extensions.glUniform1fv (uniformID, numValues, values); }
+void OpenGLShaderProgram::Uniform::set (GLfloat n1) const noexcept                                    { glUniform1f (uniformID, n1); }
+void OpenGLShaderProgram::Uniform::set (GLint n1) const noexcept                                      { glUniform1i (uniformID, n1); }
+void OpenGLShaderProgram::Uniform::set (GLfloat n1, GLfloat n2) const noexcept                        { glUniform2f (uniformID, n1, n2); }
+void OpenGLShaderProgram::Uniform::set (GLfloat n1, GLfloat n2, GLfloat n3) const noexcept            { glUniform3f (uniformID, n1, n2, n3); }
+void OpenGLShaderProgram::Uniform::set (GLfloat n1, GLfloat n2, GLfloat n3, float n4) const noexcept  { glUniform4f (uniformID, n1, n2, n3, n4); }
+void OpenGLShaderProgram::Uniform::set (GLint n1, GLint n2, GLint n3, GLint n4) const noexcept        { glUniform4i (uniformID, n1, n2, n3, n4); }
+void OpenGLShaderProgram::Uniform::set (const GLfloat* values, GLsizei numValues) const noexcept      { glUniform1fv (uniformID, numValues, values); }
 
-void OpenGLShaderProgram::Uniform::setMatrix2 (const GLfloat* v, GLint num, GLboolean trns) const noexcept { context.extensions.glUniformMatrix2fv (uniformID, num, trns, v); }
-void OpenGLShaderProgram::Uniform::setMatrix3 (const GLfloat* v, GLint num, GLboolean trns) const noexcept { context.extensions.glUniformMatrix3fv (uniformID, num, trns, v); }
-void OpenGLShaderProgram::Uniform::setMatrix4 (const GLfloat* v, GLint num, GLboolean trns) const noexcept { context.extensions.glUniformMatrix4fv (uniformID, num, trns, v); }
+void OpenGLShaderProgram::Uniform::setMatrix2 (const GLfloat* v, GLint num, GLboolean trns) const noexcept { glUniformMatrix2fv (uniformID, num, trns, v); }
+void OpenGLShaderProgram::Uniform::setMatrix3 (const GLfloat* v, GLint num, GLboolean trns) const noexcept { glUniformMatrix3fv (uniformID, num, trns, v); }
+void OpenGLShaderProgram::Uniform::setMatrix4 (const GLfloat* v, GLint num, GLboolean trns) const noexcept { glUniformMatrix4fv (uniformID, num, trns, v); }

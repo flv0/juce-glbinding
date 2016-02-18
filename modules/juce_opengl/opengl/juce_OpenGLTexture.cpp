@@ -59,10 +59,10 @@ void OpenGLTexture::create (const int w, const int h, const void* pixels, GLenum
         JUCE_CHECK_OPENGL_ERROR
         glGenTextures (1, &textureID);
         glBindTexture (GL_TEXTURE_2D, textureID);
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GLint(GL_LINEAR));
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GLint(GL_LINEAR));
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GLint(GL_CLAMP_TO_EDGE));
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GLint(GL_CLAMP_TO_EDGE));
         JUCE_CHECK_OPENGL_ERROR
     }
     else
@@ -77,7 +77,7 @@ void OpenGLTexture::create (const int w, const int h, const void* pixels, GLenum
     width  = getAllowedTextureSize (w);
     height = getAllowedTextureSize (h);
 
-    const GLint internalformat = type == GL_ALPHA ? GL_ALPHA : GL_RGBA;
+    const GLint internalformat = GLint(type == GL_ALPHA ? GL_ALPHA : GL_RGBA);
 
     if (width != w || height != h)
     {

@@ -22,6 +22,14 @@
   ==============================================================================
 */
 
+using namespace gl;
+
+#if JUCE_ANDROID
+const GLenum JUCE_RGBA_FORMAT = gl::GL_RGBA;
+#else
+const GLenum JUCE_RGBA_FORMAT = gl::GL_BGRA_EXT;
+#endif
+
 class OpenGLFrameBuffer::Pimpl
 {
 public:
@@ -35,36 +43,31 @@ public:
         // context. You'll need to create this object in one of the OpenGLContext's callbacks.
         jassert (OpenGLHelpers::isContextActive());
 
-       #if JUCE_WINDOWS || JUCE_LINUX
-        if (context.extensions.glGenFramebuffers == nullptr)
-            return;
-       #endif
-
-        context.extensions.glGenFramebuffers (1, &frameBufferID);
+        glGenFramebuffers (1, &frameBufferID);
         bind();
 
         glGenTextures (1, &textureID);
         glBindTexture (GL_TEXTURE_2D, textureID);
         JUCE_CHECK_OPENGL_ERROR
 
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GLint(GL_LINEAR));
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GLint(GL_LINEAR));
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GLint(GL_CLAMP_TO_EDGE));
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GLint(GL_CLAMP_TO_EDGE));
         JUCE_CHECK_OPENGL_ERROR
 
-        glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+        glTexImage2D (GL_TEXTURE_2D, 0, GLint(GL_RGBA), width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
         JUCE_CHECK_OPENGL_ERROR
 
-        context.extensions.glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureID, 0);
+        glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureID, 0);
 
         if (wantsDepthBuffer || wantsStencilBuffer)
         {
-            context.extensions.glGenRenderbuffers (1, &depthOrStencilBuffer);
-            context.extensions.glBindRenderbuffer (GL_RENDERBUFFER, depthOrStencilBuffer);
-            jassert (context.extensions.glIsRenderbuffer (depthOrStencilBuffer));
+            glGenRenderbuffers (1, &depthOrStencilBuffer);
+            glBindRenderbuffer (GL_RENDERBUFFER, depthOrStencilBuffer);
+            jassert (glIsRenderbuffer (depthOrStencilBuffer));
 
-            context.extensions.glRenderbufferStorage (GL_RENDERBUFFER,
+            glRenderbufferStorage (GL_RENDERBUFFER,
                                       (wantsDepthBuffer && wantsStencilBuffer) ? GL_DEPTH24_STENCIL8
                                                                               #if JUCE_OPENGL_ES
                                                                                : GL_DEPTH_COMPONENT16,
@@ -74,11 +77,11 @@ public:
                                       width, height);
 
             GLint params = 0;
-            context.extensions.glGetRenderbufferParameteriv (GL_RENDERBUFFER, GL_RENDERBUFFER_DEPTH_SIZE, &params);
-            context.extensions.glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthOrStencilBuffer);
+            glGetRenderbufferParameteriv (GL_RENDERBUFFER, GL_RENDERBUFFER_DEPTH_SIZE, &params);
+            glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthOrStencilBuffer);
 
             if (wantsStencilBuffer)
-                context.extensions.glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthOrStencilBuffer);
+                glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthOrStencilBuffer);
 
             hasDepthBuffer = wantsDepthBuffer;
             hasStencilBuffer = wantsStencilBuffer;
@@ -95,10 +98,10 @@ public:
                 glDeleteTextures (1, &textureID);
 
             if (depthOrStencilBuffer != 0)
-                context.extensions.glDeleteRenderbuffers (1, &depthOrStencilBuffer);
+                glDeleteRenderbuffers (1, &depthOrStencilBuffer);
 
             if (frameBufferID != 0)
-                context.extensions.glDeleteFramebuffers (1, &frameBufferID);
+                glDeleteFramebuffers (1, &frameBufferID);
 
             JUCE_CHECK_OPENGL_ERROR
         }
@@ -111,13 +114,13 @@ public:
 
     void bind()
     {
-        context.extensions.glBindFramebuffer (GL_FRAMEBUFFER, frameBufferID);
+        glBindFramebuffer (GL_FRAMEBUFFER, frameBufferID);
         JUCE_CHECK_OPENGL_ERROR
     }
 
     void unbind()
     {
-        context.extensions.glBindFramebuffer (GL_FRAMEBUFFER, context.getFrameBufferID());
+        glBindFramebuffer (GL_FRAMEBUFFER, context.getFrameBufferID());
         JUCE_CHECK_OPENGL_ERROR
     }
 
@@ -129,7 +132,7 @@ public:
 private:
     bool checkStatus() noexcept
     {
-        const GLenum status = context.extensions.glCheckFramebufferStatus (GL_FRAMEBUFFER);
+        const GLenum status = glCheckFramebufferStatus (GL_FRAMEBUFFER);
 
         return status == GL_NO_ERROR
             || status == GL_FRAMEBUFFER_COMPLETE;

@@ -85,7 +85,7 @@ public:
     int getHeight() const noexcept;
 
     /** Returns the texture ID number for using this buffer as a texture. */
-    GLuint getTextureID() const noexcept;
+    gl::GLuint getTextureID() const noexcept;
 
     //==============================================================================
     /** Selects this buffer as the current OpenGL rendering target. */
@@ -95,10 +95,10 @@ public:
     void releaseAsRenderingTarget();
 
     /** Returns the ID of this framebuffer, or 0 if it isn't initialised. */
-    GLuint getFrameBufferID() const noexcept;
+    gl::GLuint getFrameBufferID() const noexcept;
 
     /** Returns the current frame buffer ID for the current context. */
-    static GLuint getCurrentFrameBufferTarget() noexcept;
+    static gl::GLuint getCurrentFrameBufferTarget() noexcept;
 
     /** Clears the framebuffer with the specified colour. */
     void clear (Colour colour);

@@ -37,6 +37,7 @@
 
 #include "../juce_core/native/juce_BasicNativeHeaders.h"
 #include "juce_opengl.h"
+using namespace gl;
 
 //==============================================================================
 #if JUCE_IOS
@@ -57,6 +58,7 @@
     If you want to install OpenGL support, the packages to get are "mesa-common-dev"
     and "freeglut3-dev".
  */
+ #define __gl_h_ 1
  #include <GL/glx.h>
 
 //==============================================================================
@@ -76,24 +78,6 @@ namespace juce
 {
 
 //==============================================================================
-#include "native/juce_OpenGLExtensions.h"
-
-void OpenGLExtensionFunctions::initialise()
-{
-   #if JUCE_WINDOWS || JUCE_LINUX
-    #define JUCE_INIT_GL_FUNCTION(name, returnType, params, callparams) \
-        name = (type_ ## name) OpenGLHelpers::getExtensionFunction (#name);
-    #define JUCE_INIT_GL_FUNCTION_EXT(name, returnType, params, callparams) \
-        name = (type_ ## name) OpenGLHelpers::getExtensionFunction (#name); \
-        if (name == nullptr) \
-            name = (type_ ## name) OpenGLHelpers::getExtensionFunction (JUCE_STRINGIFY (name ## EXT));
-
-    JUCE_GL_EXTENSION_FUNCTIONS (JUCE_INIT_GL_FUNCTION, JUCE_INIT_GL_FUNCTION_EXT)
-    #undef JUCE_INIT_GL_FUNCTION
-    #undef JUCE_INIT_GL_FUNCTION_EXT
-   #endif
-}
-
 #if JUCE_OPENGL_ES
  #define JUCE_DECLARE_GL_FUNCTION(name, returnType, params, callparams) \
     returnType OpenGLExtensionFunctions::name params { return ::name callparams; }
@@ -162,7 +146,7 @@ struct OpenGLTargetSaver
 
     ~OpenGLTargetSaver() noexcept
     {
-        context.extensions.glBindFramebuffer (GL_FRAMEBUFFER, oldFramebuffer);
+        glBindFramebuffer (GL_FRAMEBUFFER, oldFramebuffer);
         glViewport (oldViewport[0], oldViewport[1], oldViewport[2], oldViewport[3]);
     }
 

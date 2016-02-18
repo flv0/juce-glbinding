@@ -41,6 +41,9 @@
 #include "juce_gui_basics.h"
 
 #if JUCE_MODULE_AVAILABLE_juce_opengl
+ #include <glbinding/gl/gl.h>
+ #include <glbinding/Binding.h>
+ using namespace gl;
  #include "../juce_opengl/juce_opengl.h"
 #endif
 

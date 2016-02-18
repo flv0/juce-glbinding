@@ -59,7 +59,7 @@ public:
         @returns  true if the shader compiled successfully. If not, you can call
                   getLastError() to find out what happened.
     */
-    bool addShader (const String& shaderSourceCode, GLenum shaderType);
+    bool addShader (const String& shaderSourceCode, gl::GLenum shaderType);
 
     /** Compiles and adds a fragment shader to this program.
         This is equivalent to calling addShader() with a type of GL_VERTEX_SHADER.
@@ -94,28 +94,28 @@ public:
     //  with these functions.
 
     /** Get the uniform ID from the variable name */
-    GLint getUniformIDFromName (const char* uniformName) const noexcept;
+    gl::GLint getUniformIDFromName (const char* uniformName) const noexcept;
 
     /** Sets a float uniform. */
-    void setUniform (const char* uniformName, GLfloat value) noexcept;
+    void setUniform (const char* uniformName, gl::GLfloat value) noexcept;
     /** Sets an int uniform. */
-    void setUniform (const char* uniformName, GLint value) noexcept;
+    void setUniform (const char* uniformName, gl::GLint value) noexcept;
     /** Sets a vec2 uniform. */
-    void setUniform (const char* uniformName, GLfloat x, GLfloat y) noexcept;
+    void setUniform (const char* uniformName, gl::GLfloat x, gl::GLfloat y) noexcept;
     /** Sets a vec3 uniform. */
-    void setUniform (const char* uniformName, GLfloat x, GLfloat y, GLfloat z) noexcept;
+    void setUniform (const char* uniformName, gl::GLfloat x, gl::GLfloat y, gl::GLfloat z) noexcept;
     /** Sets a vec4 uniform. */
-    void setUniform (const char* uniformName, GLfloat x, GLfloat y, GLfloat z, GLfloat w) noexcept;
+    void setUniform (const char* uniformName, gl::GLfloat x, gl::GLfloat y, gl::GLfloat z, gl::GLfloat w) noexcept;
     /** Sets a vec4 uniform. */
-    void setUniform (const char* uniformName, GLint x, GLint y, GLint z, GLint w) noexcept;
+    void setUniform (const char* uniformName, gl::GLint x, gl::GLint y, gl::GLint z, gl::GLint w) noexcept;
     /** Sets a vector float uniform. */
-    void setUniform (const char* uniformName, const GLfloat* values, GLsizei numValues) noexcept;
+    void setUniform (const char* uniformName, const gl::GLfloat* values, gl::GLsizei numValues) noexcept;
     /** Sets a 2x2 matrix float uniform. */
-    void setUniformMat2 (const char* uniformName, const GLfloat* values, GLint count, GLboolean transpose) noexcept;
+    void setUniformMat2 (const char* uniformName, const gl::GLfloat* values, gl::GLint count, gl::GLboolean transpose) noexcept;
     /** Sets a 3x3 matrix float uniform. */
-    void setUniformMat3 (const char* uniformName, const GLfloat* values, GLint count, GLboolean transpose) noexcept;
+    void setUniformMat3 (const char* uniformName, const gl::GLfloat* values, gl::GLint count, gl::GLboolean transpose) noexcept;
     /** Sets a 4x4 matrix float uniform. */
-    void setUniformMat4 (const char* uniformName, const GLfloat* values, GLint count, GLboolean transpose) noexcept;
+    void setUniformMat4 (const char* uniformName, const gl::GLfloat* values, gl::GLint count, gl::GLboolean transpose) noexcept;
 
     //==============================================================================
     /** Represents an openGL uniform value.
@@ -134,30 +134,30 @@ public:
         Uniform (const OpenGLShaderProgram& program, const char* uniformName);
 
         /** Sets a float uniform. */
-        void set (GLfloat n1) const noexcept;
+        void set (gl::GLfloat n1) const noexcept;
         /** Sets an int uniform. */
-        void set (GLint n1) const noexcept;
+        void set (gl::GLint n1) const noexcept;
         /** Sets a vec2 uniform. */
-        void set (GLfloat n1, GLfloat n2) const noexcept;
+        void set (gl::GLfloat n1, gl::GLfloat n2) const noexcept;
         /** Sets a vec3 uniform. */
-        void set (GLfloat n1, GLfloat n2, GLfloat n3) const noexcept;
+        void set (gl::GLfloat n1, gl::GLfloat n2, gl::GLfloat n3) const noexcept;
         /** Sets a vec4 uniform. */
-        void set (GLfloat n1, GLfloat n2, GLfloat n3, float n4) const noexcept;
+        void set (gl::GLfloat n1, gl::GLfloat n2, gl::GLfloat n3, float n4) const noexcept;
         /** Sets an ivec4 uniform. */
-        void set (GLint n1, GLint n2, GLint n3, GLint n4) const noexcept;
+        void set (gl::GLint n1, gl::GLint n2, gl::GLint n3, gl::GLint n4) const noexcept;
         /** Sets a vector float uniform. */
-        void set (const GLfloat* values, int numValues) const noexcept;
+        void set (const gl::GLfloat* values, int numValues) const noexcept;
         /** Sets a 2x2 matrix float uniform. */
-        void setMatrix2 (const GLfloat* values, GLint count, GLboolean transpose) const noexcept;
+        void setMatrix2 (const gl::GLfloat* values, gl::GLint count, gl::GLboolean transpose) const noexcept;
         /** Sets a 3x3 matrix float uniform. */
-        void setMatrix3 (const GLfloat* values, GLint count, GLboolean transpose) const noexcept;
+        void setMatrix3 (const gl::GLfloat* values, gl::GLint count, gl::GLboolean transpose) const noexcept;
         /** Sets a 4x4 matrix float uniform. */
-        void setMatrix4 (const GLfloat* values, GLint count, GLboolean transpose) const noexcept;
+        void setMatrix4 (const gl::GLfloat* values, gl::GLint count, gl::GLboolean transpose) const noexcept;
 
         /** The uniform's ID number.
             If the uniform couldn't be found, this value will be < 0.
         */
-        GLint uniformID;
+        gl::GLint uniformID;
 
     private:
         const OpenGLContext& context;
@@ -181,15 +181,15 @@ public:
         /** The attribute's ID number.
             If the uniform couldn't be found, this value will be < 0.
         */
-        GLuint attributeID;
+        gl::GLuint attributeID;
     };
 
     /** The ID number of the compiled program. */
-    GLuint getProgramID() const noexcept;
+    gl::GLuint getProgramID() const noexcept;
 
 private:
     const OpenGLContext& context;
-    mutable GLuint programID;
+    mutable gl::GLuint programID;
     String errorLog;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OpenGLShaderProgram)

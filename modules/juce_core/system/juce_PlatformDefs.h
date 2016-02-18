@@ -131,7 +131,7 @@
       correct behaviour of your program!
       @see jassertfalse
   */
-  #define jassert(expression)       MACRO_WITH_FORCED_SEMICOLON (if (! (expression)) jassertfalse;)
+  #define jassert(expression)       MACRO_WITH_FORCED_SEMICOLON (if (! bool(expression)) jassertfalse;)
 
 #else
   //==============================================================================
