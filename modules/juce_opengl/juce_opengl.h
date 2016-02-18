@@ -25,61 +25,13 @@
 #ifndef JUCE_OPENGL_H_INCLUDED
 #define JUCE_OPENGL_H_INCLUDED
 
+#include <glbinding/gl/gl.h>
+#include <glbinding/Binding.h>
+
 #include "../juce_gui_extra/juce_gui_extra.h"
 
-#undef JUCE_OPENGL
-#define JUCE_OPENGL 1
-
-#if JUCE_IOS || JUCE_ANDROID
- #define JUCE_OPENGL_ES 1
-#endif
-
-#if JUCE_WINDOWS
- #ifndef APIENTRY
-  #define APIENTRY __stdcall
-  #define CLEAR_TEMP_APIENTRY 1
- #endif
- #ifndef WINGDIAPI
-  #define WINGDIAPI __declspec(dllimport)
-  #define CLEAR_TEMP_WINGDIAPI 1
- #endif
- #include <gl/GL.h>
- #ifdef CLEAR_TEMP_WINGDIAPI
-  #undef WINGDIAPI
-  #undef CLEAR_TEMP_WINGDIAPI
- #endif
- #ifdef CLEAR_TEMP_APIENTRY
-  #undef APIENTRY
-  #undef CLEAR_TEMP_APIENTRY
- #endif
-#elif JUCE_LINUX
- #include <GL/gl.h>
- #undef KeyPress
-#elif JUCE_IOS
- #if defined (__IPHONE_7_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
-  #include <OpenGLES/ES3/gl.h>
- #else
-  #include <OpenGLES/ES2/gl.h>
- #endif
-#elif JUCE_MAC
- #if defined (MAC_OS_X_VERSION_10_7) && (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_7)
-  #define JUCE_OPENGL3 1
-  #include <OpenGL/gl3.h>
-  #include <OpenGL/gl3ext.h>
- #else
-  #include <OpenGL/gl.h>
-  #include <OpenGL/glext.h>
- #endif
-#elif JUCE_ANDROID
- #include <android/native_window.h>
- #include <android/native_window_jni.h>
- #include <GLES2/gl2.h>
- #include <EGL/egl.h>
-#endif
-
-#if GL_ES_VERSION_3_0
- #define JUCE_OPENGL3 1
-#endif
+#define JUCE_OPENGL  1
+//#define JUCE_OPENGL3 1
 
 //=============================================================================
 /** This macro is a helper for use in GLSL shader code which needs to compile on both OpenGL 2.1 and OpenGL 3.0.
@@ -132,10 +84,8 @@ class OpenGLShaderProgram;
 #include "geometry/juce_Matrix3D.h"
 #include "geometry/juce_Vector3D.h"
 #include "geometry/juce_Draggable3DOrientation.h"
-#include "native/juce_MissingGLDefinitions.h"
 #include "opengl/juce_OpenGLHelpers.h"
 #include "opengl/juce_OpenGLPixelFormat.h"
-#include "native/juce_OpenGLExtensions.h"
 #include "opengl/juce_OpenGLRenderer.h"
 #include "opengl/juce_OpenGLContext.h"
 #include "opengl/juce_OpenGLFrameBuffer.h"

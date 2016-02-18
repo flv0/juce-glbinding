@@ -192,7 +192,7 @@ public:
         }
 
         glDisable (GL_SCISSOR_TEST);
-        context.extensions.glBindFramebuffer (GL_FRAMEBUFFER, previousFrameBufferTarget);
+        glBindFramebuffer (GL_FRAMEBUFFER, previousFrameBufferTarget);
         JUCE_CHECK_OPENGL_ERROR
     }
 
@@ -330,14 +330,7 @@ public:
         clearGLError();
        #endif
 
-       #if JUCE_WINDOWS
-        // some stupidly old drivers are missing this function, so try to at least avoid a crash here,
-        // but if you hit this assertion you may want to have your own version check before using the
-        // component rendering stuff on such old drivers.
-        jassert (context.extensions.glActiveTexture != nullptr);
-        if (context.extensions.glActiveTexture != nullptr)
-       #endif
-            context.extensions.glActiveTexture (GL_TEXTURE0);
+        glActiveTexture (GL_TEXTURE0);
 
         glBindTexture (GL_TEXTURE_2D, cachedImageFrameBuffer.getTextureID());
         bindVertexArray();
@@ -464,7 +457,6 @@ public:
 
         glViewport (0, 0, component.getWidth(), component.getHeight());
 
-        context.extensions.initialise();
         nativeContext->setSwapInterval (1);
 
        #if ! JUCE_OPENGL_ES
@@ -650,6 +642,7 @@ private:
 
         comp.setCachedComponentImage (nullptr);
         context.nativeContext = nullptr;
+        glbinding::Binding::useCurrentContext();
     }
 
     void timerCallback() override
@@ -778,6 +771,7 @@ bool OpenGLContext::makeActive() const noexcept
     if (nativeContext != nullptr && nativeContext->makeActive())
     {
         current = const_cast<OpenGLContext*> (this);
+        glbinding::Binding::useCurrentContext();
         return true;
     }
 
@@ -996,21 +990,21 @@ void OpenGLContext::copyTexture (const Rectangle<int>& targetClipArea,
         program.params.set ((float) contextWidth, (float) contextHeight, anchorPosAndTextureSize.toFloat(), flippedVertically);
 
         GLuint vertexBuffer = 0;
-        extensions.glGenBuffers (1, &vertexBuffer);
-        extensions.glBindBuffer (GL_ARRAY_BUFFER, vertexBuffer);
-        extensions.glBufferData (GL_ARRAY_BUFFER, sizeof (vertices), vertices, GL_STATIC_DRAW);
+        glGenBuffers (1, &vertexBuffer);
+        glBindBuffer (GL_ARRAY_BUFFER, vertexBuffer);
+        glBufferData (GL_ARRAY_BUFFER, sizeof (vertices), vertices, GL_STATIC_DRAW);
 
         const GLuint index = (GLuint) program.params.positionAttribute.attributeID;
-        extensions.glVertexAttribPointer (index, 2, GL_SHORT, GL_FALSE, 4, 0);
-        extensions.glEnableVertexAttribArray (index);
+        glVertexAttribPointer (index, 2, GL_SHORT, GL_FALSE, 4, 0);
+        glEnableVertexAttribArray (index);
         JUCE_CHECK_OPENGL_ERROR
 
         glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
 
-        extensions.glBindBuffer (GL_ARRAY_BUFFER, 0);
-        extensions.glUseProgram (0);
-        extensions.glDisableVertexAttribArray (index);
-        extensions.glDeleteBuffers (1, &vertexBuffer);
+        glBindBuffer (GL_ARRAY_BUFFER, 0);
+        glUseProgram (0);
+        glDisableVertexAttribArray (index);
+        glDeleteBuffers (1, &vertexBuffer);
     }
     else
     {
