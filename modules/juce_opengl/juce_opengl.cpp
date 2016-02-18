@@ -37,6 +37,7 @@
 #define JUCE_GRAPHICS_INCLUDE_COREGRAPHICS_HELPERS 1
 
 #include "juce_opengl.h"
+using namespace gl;
 
 //==============================================================================
 #if JUCE_IOS
@@ -57,6 +58,7 @@
     If you want to install OpenGL support, the packages to get are "mesa-common-dev"
     and "freeglut3-dev".
  */
+ #define __gl_h_ 1
  #include <GL/glx.h>
 
 //==============================================================================
@@ -174,7 +176,7 @@ struct OpenGLTargetSaver
 
     ~OpenGLTargetSaver() noexcept
     {
-        context.extensions.glBindFramebuffer (GL_FRAMEBUFFER, oldFramebuffer);
+        glBindFramebuffer (GL_FRAMEBUFFER, oldFramebuffer);
         glViewport (oldViewport[0], oldViewport[1], oldViewport[2], oldViewport[3]);
     }
 

@@ -54,6 +54,8 @@
 #define JUCE_OPENGL_H_INCLUDED
 
 #include <juce_gui_extra/juce_gui_extra.h>
+#include <glbinding/gl/gl.h>
+#include <glbinding/Binding.h>
 
 #undef JUCE_OPENGL
 #define JUCE_OPENGL 1
@@ -87,8 +89,6 @@
   #undef CLEAR_TEMP_APIENTRY
  #endif
 #elif JUCE_LINUX
- #include <GL/gl.h>
- #undef KeyPress
 #elif JUCE_IOS
  #if defined (__IPHONE_7_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
   #include <OpenGLES/ES3/gl.h>
@@ -111,9 +111,8 @@
  #include <EGL/egl.h>
 #endif
 
-#if GL_ES_VERSION_3_0
- #define JUCE_OPENGL3 1
-#endif
+#define JUCE_OPENGL  1
+//#define JUCE_OPENGL3 1
 
 //==============================================================================
 /** This macro is a helper for use in GLSL shader code which needs to compile on both OpenGL 2.1 and OpenGL 3.0.
@@ -166,10 +165,8 @@ class OpenGLShaderProgram;
 #include "geometry/juce_Matrix3D.h"
 #include "geometry/juce_Vector3D.h"
 #include "geometry/juce_Draggable3DOrientation.h"
-#include "native/juce_MissingGLDefinitions.h"
 #include "opengl/juce_OpenGLHelpers.h"
 #include "opengl/juce_OpenGLPixelFormat.h"
-#include "native/juce_OpenGLExtensions.h"
 #include "opengl/juce_OpenGLRenderer.h"
 #include "opengl/juce_OpenGLContext.h"
 #include "opengl/juce_OpenGLFrameBuffer.h"

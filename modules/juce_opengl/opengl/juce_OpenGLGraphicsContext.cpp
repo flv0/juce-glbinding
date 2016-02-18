@@ -239,10 +239,7 @@ struct Target
 
     void makeActive() const noexcept
     {
-       #if JUCE_WINDOWS
-        if (context.extensions.glBindFramebuffer != nullptr)
-       #endif
-            context.extensions.glBindFramebuffer (GL_FRAMEBUFFER, frameBufferID);
+        glBindFramebuffer (GL_FRAMEBUFFER, frameBufferID);
 
         glViewport (0, 0, bounds.getWidth(), bounds.getHeight());
         glDisable (GL_DEPTH_TEST);
@@ -411,16 +408,16 @@ public:
 
         void bindAttributes (OpenGLContext& context)
         {
-            context.extensions.glVertexAttribPointer ((GLuint) positionAttribute.attributeID, 2, GL_SHORT, GL_FALSE, 8, (void*) 0);
-            context.extensions.glVertexAttribPointer ((GLuint) colourAttribute.attributeID, 4, GL_UNSIGNED_BYTE, GL_TRUE, 8, (void*) 4);
-            context.extensions.glEnableVertexAttribArray ((GLuint) positionAttribute.attributeID);
-            context.extensions.glEnableVertexAttribArray ((GLuint) colourAttribute.attributeID);
+            glVertexAttribPointer ((GLuint) positionAttribute.attributeID, 2, GL_SHORT, GL_FALSE, 8, (void*) 0);
+            glVertexAttribPointer ((GLuint) colourAttribute.attributeID, 4, GL_UNSIGNED_BYTE, GL_TRUE, 8, (void*) 4);
+            glEnableVertexAttribArray ((GLuint) positionAttribute.attributeID);
+            glEnableVertexAttribArray ((GLuint) colourAttribute.attributeID);
         }
 
         void unbindAttributes (OpenGLContext& context)
         {
-            context.extensions.glDisableVertexAttribArray ((GLuint) positionAttribute.attributeID);
-            context.extensions.glDisableVertexAttribArray ((GLuint) colourAttribute.attributeID);
+            glDisableVertexAttribArray ((GLuint) positionAttribute.attributeID);
+            glDisableVertexAttribArray ((GLuint) colourAttribute.attributeID);
         }
 
         OpenGLShaderProgram::Attribute positionAttribute, colourAttribute;
@@ -814,13 +811,13 @@ struct StateHelpers
     struct BlendingMode
     {
         BlendingMode() noexcept
-            : blendingEnabled (false), srcFunction (0), dstFunction (0)
+            : blendingEnabled (false), srcFunction (GLenum(0)), dstFunction (GLenum(0))
         {}
 
         void resync() noexcept
         {
             glDisable (GL_BLEND);
-            srcFunction = dstFunction = 0;
+            srcFunction = dstFunction = GLenum(0);
         }
 
         template <class QuadQueueType>
@@ -1026,7 +1023,7 @@ struct StateHelpers
             if (currentActiveTexture != index)
             {
                 currentActiveTexture = index;
-                context.extensions.glActiveTexture ((GLenum) (GL_TEXTURE0 + index));
+                glActiveTexture ((GLenum) (GLint(GL_TEXTURE0) + index));
                 JUCE_CHECK_OPENGL_ERROR
             }
         }
@@ -1134,9 +1131,9 @@ struct StateHelpers
         ~ShaderQuadQueue() noexcept
         {
             static_jassert (sizeof (VertexInfo) == 8);
-            context.extensions.glBindBuffer (GL_ARRAY_BUFFER, 0);
-            context.extensions.glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0);
-            context.extensions.glDeleteBuffers (2, buffers);
+            glBindBuffer (GL_ARRAY_BUFFER, 0);
+            glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0);
+            glDeleteBuffers (2, buffers);
         }
 
         void initialise() noexcept
@@ -1150,11 +1147,11 @@ struct StateHelpers
                 indexData[i + 5] = (GLushort) (v + 3);
             }
 
-            context.extensions.glGenBuffers (2, buffers);
-            context.extensions.glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, buffers[0]);
-            context.extensions.glBufferData (GL_ELEMENT_ARRAY_BUFFER, sizeof (indexData), indexData, GL_STATIC_DRAW);
-            context.extensions.glBindBuffer (GL_ARRAY_BUFFER, buffers[1]);
-            context.extensions.glBufferData (GL_ARRAY_BUFFER, sizeof (vertexData), vertexData, GL_STREAM_DRAW);
+            glGenBuffers (2, buffers);
+            glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, buffers[0]);
+            glBufferData (GL_ELEMENT_ARRAY_BUFFER, sizeof (indexData), indexData, GL_STATIC_DRAW);
+            glBindBuffer (GL_ARRAY_BUFFER, buffers[1]);
+            glBufferData (GL_ARRAY_BUFFER, sizeof (vertexData), vertexData, GL_STREAM_DRAW);
             JUCE_CHECK_OPENGL_ERROR
         }
 
@@ -1245,7 +1242,7 @@ struct StateHelpers
 
         void draw() noexcept
         {
-            context.extensions.glBufferSubData (GL_ARRAY_BUFFER, 0, (GLsizeiptr) ((size_t) numVertices * sizeof (VertexInfo)), vertexData);
+            glBufferSubData (GL_ARRAY_BUFFER, 0, (GLsizeiptr) ((size_t) numVertices * sizeof (VertexInfo)), vertexData);
             // NB: If you get a random crash in here and are running in a Parallels VM, it seems to be a bug in
             // their driver.. Can't find a workaround unfortunately.
             glDrawElements (GL_TRIANGLES, (numVertices * 3) / 2, GL_UNSIGNED_SHORT, 0);
@@ -1311,7 +1308,7 @@ struct StateHelpers
                 quadQueue.flush();
                 activeShader->unbindAttributes (context);
                 activeShader = nullptr;
-                context.extensions.glUseProgram (0);
+                glUseProgram (0);
             }
         }
 
@@ -1353,7 +1350,7 @@ public:
     ~GLState()
     {
         flush();
-        target.context.extensions.glBindFramebuffer (GL_FRAMEBUFFER, previousFrameBufferTarget);
+        glBindFramebuffer (GL_FRAMEBUFFER, previousFrameBufferTarget);
     }
 
     void flush()
@@ -1741,7 +1738,7 @@ public:
         const GLuint previousFrameBufferTarget = OpenGLFrameBuffer::getCurrentFrameBufferTarget();
 
        #if ! JUCE_ANDROID
-        target.context.extensions.glActiveTexture (GL_TEXTURE0);
+        glActiveTexture (GL_TEXTURE0);
         glEnable (GL_TEXTURE_2D);
         clearGLError();
        #endif
@@ -1757,10 +1754,7 @@ public:
                                     false);
         glBindTexture (GL_TEXTURE_2D, 0);
 
-       #if JUCE_WINDOWS
-        if (target.context.extensions.glBindFramebuffer != nullptr)
-       #endif
-            target.context.extensions.glBindFramebuffer (GL_FRAMEBUFFER, previousFrameBufferTarget);
+        glBindFramebuffer (GL_FRAMEBUFFER, previousFrameBufferTarget);
 
         JUCE_CHECK_OPENGL_ERROR
     }

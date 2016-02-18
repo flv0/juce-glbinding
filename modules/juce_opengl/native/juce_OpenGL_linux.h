@@ -137,7 +137,7 @@ public:
     void initialiseOnRenderThread (OpenGLContext& c)
     {
         ScopedXLock xlock;
-        renderContext = glXCreateContext (display, bestVisual, (GLXContext) contextToShareWith, GL_TRUE);
+        renderContext = glXCreateContext (display, bestVisual, (GLXContext) contextToShareWith, 1);
         c.makeActive();
         context = &c;
     }

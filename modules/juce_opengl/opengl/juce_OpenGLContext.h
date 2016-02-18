@@ -242,9 +242,6 @@ public:
     */
     void* getRawContext() const noexcept;
 
-    /** This structure holds a set of dynamically loaded GL functions for use on this context. */
-    OpenGLExtensionFunctions extensions;
-
     //==============================================================================
     /** Draws the currently selected texture into this context at its original size.
 

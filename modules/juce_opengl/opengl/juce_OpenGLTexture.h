@@ -78,7 +78,7 @@ public:
     void unbind() const;
 
     /** Returns the GL texture ID number. */
-    GLuint getTextureID() const noexcept        { return textureID; }
+    gl::GLuint getTextureID() const noexcept        { return textureID; }
 
     int getWidth() const noexcept               { return width; }
     int getHeight() const noexcept              { return height; }
@@ -89,11 +89,11 @@ public:
     static bool isValidSize (int width, int height);
 
 private:
-    GLuint textureID;
+    gl::GLuint textureID;
     int width, height;
     OpenGLContext* ownerContext;
 
-    void create (int w, int h, const void*, GLenum, bool topLeft);
+    void create (int w, int h, const void*, gl::GLenum, bool topLeft);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OpenGLTexture)
 };
