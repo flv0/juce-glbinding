@@ -31,7 +31,7 @@
 #include "../juce_gui_extra/juce_gui_extra.h"
 
 #define JUCE_OPENGL  1
-#define JUCE_OPENGL3 1
+//#define JUCE_OPENGL3 1
 
 //=============================================================================
 /** This macro is a helper for use in GLSL shader code which needs to compile on both OpenGL 2.1 and OpenGL 3.0.
