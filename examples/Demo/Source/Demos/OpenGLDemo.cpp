@@ -26,6 +26,8 @@
 
 #if JUCE_OPENGL
 
+using namespace gl;
+
 #include "WavefrontObjParser.h"
 
 
@@ -61,35 +63,35 @@ struct OpenGLDemoClasses
         {
             if (position != nullptr)
             {
-                openGLContext.extensions.glVertexAttribPointer (position->attributeID, 3, GL_FLOAT, GL_FALSE, sizeof (Vertex), 0);
-                openGLContext.extensions.glEnableVertexAttribArray (position->attributeID);
+                glVertexAttribPointer (position->attributeID, 3, GL_FLOAT, GL_FALSE, sizeof (Vertex), 0);
+                glEnableVertexAttribArray (position->attributeID);
             }
 
             if (normal != nullptr)
             {
-                openGLContext.extensions.glVertexAttribPointer (normal->attributeID, 3, GL_FLOAT, GL_FALSE, sizeof (Vertex), (GLvoid*) (sizeof (float) * 3));
-                openGLContext.extensions.glEnableVertexAttribArray (normal->attributeID);
+                glVertexAttribPointer (normal->attributeID, 3, GL_FLOAT, GL_FALSE, sizeof (Vertex), (GLvoid*) (sizeof (float) * 3));
+                glEnableVertexAttribArray (normal->attributeID);
             }
 
             if (sourceColour != nullptr)
             {
-                openGLContext.extensions.glVertexAttribPointer (sourceColour->attributeID, 4, GL_FLOAT, GL_FALSE, sizeof (Vertex), (GLvoid*) (sizeof (float) * 6));
-                openGLContext.extensions.glEnableVertexAttribArray (sourceColour->attributeID);
+                glVertexAttribPointer (sourceColour->attributeID, 4, GL_FLOAT, GL_FALSE, sizeof (Vertex), (GLvoid*) (sizeof (float) * 6));
+                glEnableVertexAttribArray (sourceColour->attributeID);
             }
 
             if (texureCoordIn != nullptr)
             {
-                openGLContext.extensions.glVertexAttribPointer (texureCoordIn->attributeID, 2, GL_FLOAT, GL_FALSE, sizeof (Vertex), (GLvoid*) (sizeof (float) * 10));
-                openGLContext.extensions.glEnableVertexAttribArray (texureCoordIn->attributeID);
+                glVertexAttribPointer (texureCoordIn->attributeID, 2, GL_FLOAT, GL_FALSE, sizeof (Vertex), (GLvoid*) (sizeof (float) * 10));
+                glEnableVertexAttribArray (texureCoordIn->attributeID);
             }
         }
 
         void disable (OpenGLContext& openGLContext)
         {
-            if (position != nullptr)       openGLContext.extensions.glDisableVertexAttribArray (position->attributeID);
-            if (normal != nullptr)         openGLContext.extensions.glDisableVertexAttribArray (normal->attributeID);
-            if (sourceColour != nullptr)   openGLContext.extensions.glDisableVertexAttribArray (sourceColour->attributeID);
-            if (texureCoordIn != nullptr)  openGLContext.extensions.glDisableVertexAttribArray (texureCoordIn->attributeID);
+            if (position != nullptr)       glDisableVertexAttribArray (position->attributeID);
+            if (normal != nullptr)         glDisableVertexAttribArray (normal->attributeID);
+            if (sourceColour != nullptr)   glDisableVertexAttribArray (sourceColour->attributeID);
+            if (texureCoordIn != nullptr)  glDisableVertexAttribArray (texureCoordIn->attributeID);
         }
 
         ScopedPointer<OpenGLShaderProgram::Attribute> position, normal, sourceColour, texureCoordIn;
@@ -99,7 +101,7 @@ struct OpenGLDemoClasses
                                                                 OpenGLShaderProgram& shader,
                                                                 const char* attributeName)
         {
-            if (openGLContext.extensions.glGetAttribLocation (shader.getProgramID(), attributeName) < 0)
+            if (glGetAttribLocation (shader.getProgramID(), attributeName) < 0)
                 return nullptr;
 
             return new OpenGLShaderProgram::Attribute (shader, attributeName);
@@ -126,7 +128,7 @@ struct OpenGLDemoClasses
                                                             OpenGLShaderProgram& shader,
                                                             const char* uniformName)
         {
-            if (openGLContext.extensions.glGetUniformLocation (shader.getProgramID(), uniformName) < 0)
+            if (glGetUniformLocation (shader.getProgramID(), uniformName) < 0)
                 return nullptr;
 
             return new OpenGLShaderProgram::Uniform (shader, uniformName);
@@ -167,31 +169,31 @@ struct OpenGLDemoClasses
             {
                 numIndices = shape.mesh.indices.size();
 
-                openGLContext.extensions.glGenBuffers (1, &vertexBuffer);
-                openGLContext.extensions.glBindBuffer (GL_ARRAY_BUFFER, vertexBuffer);
+                glGenBuffers (1, &vertexBuffer);
+                glBindBuffer (GL_ARRAY_BUFFER, vertexBuffer);
 
                 Array<Vertex> vertices;
                 createVertexListFromMesh (shape.mesh, vertices, Colours::green);
 
-                openGLContext.extensions.glBufferData (GL_ARRAY_BUFFER, vertices.size() * (int) sizeof (Vertex),
+                glBufferData (GL_ARRAY_BUFFER, vertices.size() * (int) sizeof (Vertex),
                                                        vertices.getRawDataPointer(), GL_STATIC_DRAW);
 
-                openGLContext.extensions.glGenBuffers (1, &indexBuffer);
-                openGLContext.extensions.glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-                openGLContext.extensions.glBufferData (GL_ELEMENT_ARRAY_BUFFER, numIndices * (int) sizeof (juce::uint32),
+                glGenBuffers (1, &indexBuffer);
+                glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+                glBufferData (GL_ELEMENT_ARRAY_BUFFER, numIndices * (int) sizeof (juce::uint32),
                                                        shape.mesh.indices.getRawDataPointer(), GL_STATIC_DRAW);
             }
 
             ~VertexBuffer()
             {
-                openGLContext.extensions.glDeleteBuffers (1, &vertexBuffer);
-                openGLContext.extensions.glDeleteBuffers (1, &indexBuffer);
+                glDeleteBuffers (1, &vertexBuffer);
+                glDeleteBuffers (1, &indexBuffer);
             }
 
             void bind()
             {
-                openGLContext.extensions.glBindBuffer (GL_ARRAY_BUFFER, vertexBuffer);
-                openGLContext.extensions.glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+                glBindBuffer (GL_ARRAY_BUFFER, vertexBuffer);
+                glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
             }
 
             GLuint vertexBuffer, indexBuffer;
@@ -666,23 +668,23 @@ struct OpenGLDemoClasses
             glDepthFunc (GL_LESS);
             glEnable (GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            openGLContext.extensions.glActiveTexture (GL_TEXTURE0);
+            glActiveTexture (GL_TEXTURE0);
             glEnable (GL_TEXTURE_2D);
 
             glViewport (0, 0, roundToInt (desktopScale * getWidth()), roundToInt (desktopScale * getHeight()));
 
             texture.bind();
 
-            glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GLint(GL_REPEAT));
+            glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GLint(GL_REPEAT));
 
             shader->use();
 
             if (uniforms->projectionMatrix != nullptr)
-                uniforms->projectionMatrix->setMatrix4 (getProjectionMatrix().mat, 1, false);
+                uniforms->projectionMatrix->setMatrix4 (getProjectionMatrix().mat, 1, GL_FALSE);
 
             if (uniforms->viewMatrix != nullptr)
-                uniforms->viewMatrix->setMatrix4 (getViewMatrix().mat, 1, false);
+                uniforms->viewMatrix->setMatrix4 (getViewMatrix().mat, 1, GL_FALSE);
 
             if (uniforms->texture != nullptr)
                 uniforms->texture->set ((GLint) 0);
@@ -696,8 +698,8 @@ struct OpenGLDemoClasses
             shape->draw (openGLContext, *attributes);
 
             // Reset the element buffers so child Components draw correctly
-            openGLContext.extensions.glBindBuffer (GL_ARRAY_BUFFER, 0);
-            openGLContext.extensions.glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0);
+            glBindBuffer (GL_ARRAY_BUFFER, 0);
+            glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0);
 
             if (! controlsOverlay->isMouseButtonDown())
                 rotation += (float) rotationSpeed;

@@ -219,10 +219,10 @@
         <MODULEPATH id="juce_audio_basics" path="../../modules"/>
       </MODULEPATHS>
     </ANDROIDSTUDIO>
-    <LINUX_MAKE targetFolder="Builds/Linux">
+    <LINUX_MAKE targetFolder="Builds/Linux" externalLibraries="glbinding">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="JuceDemo"/>
+        <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/&#10;${GLBINDING_DIR}/lib"
+                       isDebug="1" optimisation="1" targetName="JuceDemo" headerPath="${GLBINDING_DIR}/include"/>
         <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="3"
                        targetName="JuceDemo"/>
       </CONFIGURATIONS>
