@@ -26,8 +26,8 @@
 		37650014CFB133BE49E618C7 = {isa = PBXBuildFile; fileRef = 5ACE35425F10E6FE0CD30B44; };
 		15165888F33A50CEEAF270C7 = {isa = PBXBuildFile; fileRef = B6567C791BE962F993B78C02; };
 		12C002E482A05AEA16654DF9 = {isa = PBXBuildFile; fileRef = 7A6A889A32581FBE73645356; };
-		A6EFA2CFF4D8C125C8AAEFB6 = {isa = PBXBuildFile; fileRef = 12C24C2237E0F23FDCCCE953; };
 		5AD5FE50F1508B1EC89C37AF = {isa = PBXBuildFile; fileRef = 45E82A90482A147FF8FA6507; };
+		5242C773D354EA0B2527D4B8 = {isa = PBXBuildFile; fileRef = F9AD652235B91EB0693AB186; };
 		ED749B2640D6B4FB7E32CC22 = {isa = PBXBuildFile; fileRef = 60ECEC321E2335CA55B41A55; };
 		F85FA72ECA3C1A04D624A4BD = {isa = PBXBuildFile; fileRef = 2DA5A7253793B9BFBB4E2A18; };
 		C452CBE4FAC93EDD00579A23 = {isa = PBXBuildFile; fileRef = 8E20AE27507F5C47985A6865; };
@@ -561,6 +561,7 @@
 		69A29D8420DB0B53507E223D = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "juce_VST_Wrapper.mm"; path = "../../../../../modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.mm"; sourceTree = "SOURCE_ROOT"; };
 		69A7A2200F2886D263295D9C = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = jfdctfst.c; path = "../../../../../modules/juce_graphics/image_formats/jpglib/jfdctfst.c"; sourceTree = "SOURCE_ROOT"; };
 		69D08C7859B6E11D7178EDE6 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_IncludeModuleHeaders.h"; path = "../../../../../modules/juce_audio_plugin_client/utility/juce_IncludeModuleHeaders.h"; sourceTree = "SOURCE_ROOT"; };
+		69D40DB250FC6775EDBCCC5B = {isa = PBXFileReference; lastKnownFileType = file.r; name = AUResources.r; path = "../../../../../modules/juce_audio_plugin_client/AU/AUResources.r"; sourceTree = "SOURCE_ROOT"; };
 		6A10154E849CB11E12ECC863 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_win32_FileChooser.cpp"; path = "../../../../../modules/juce_gui_basics/native/juce_win32_FileChooser.cpp"; sourceTree = "SOURCE_ROOT"; };
 		6A25D165EFEF09D036B36B91 = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-VST.plist"; path = "Info-VST.plist"; sourceTree = "SOURCE_ROOT"; };
 		6A6F0D3243A18E80597F1CB3 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_PerformanceCounter.h"; path = "../../../../../modules/juce_core/time/juce_PerformanceCounter.h"; sourceTree = "SOURCE_ROOT"; };
@@ -703,6 +704,7 @@
 		854A261D384CB1F682305BE9 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_MultiTouchMapper.h"; path = "../../../../../modules/juce_gui_basics/native/juce_MultiTouchMapper.h"; sourceTree = "SOURCE_ROOT"; };
 		85B9E97C3FC7D20270A420B9 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_XmlDocument.cpp"; path = "../../../../../modules/juce_core/xml/juce_XmlDocument.cpp"; sourceTree = "SOURCE_ROOT"; };
 		865AA1F62812A0984F048080 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "res_books_51.h"; path = "../../../../../modules/juce_audio_formats/codecs/oggvorbis/libvorbis-1.3.2/lib/books/coupled/res_books_51.h"; sourceTree = "SOURCE_ROOT"; };
+		86691FA1B2CDD3570ABEA9C7 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_AAX_Modifier_Injector.h"; path = "../../../../../modules/juce_audio_plugin_client/AAX/juce_AAX_Modifier_Injector.h"; sourceTree = "SOURCE_ROOT"; };
 		867F6834281C8B941D0BCE1D = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_MemoryOutputStream.cpp"; path = "../../../../../modules/juce_core/streams/juce_MemoryOutputStream.cpp"; sourceTree = "SOURCE_ROOT"; };
 		873AB549F9D4BB2CB942B021 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_GraphicsContext.h"; path = "../../../../../modules/juce_graphics/contexts/juce_GraphicsContext.h"; sourceTree = "SOURCE_ROOT"; };
 		8751B08C7CCFAA3B9B070452 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_CameraDevice.h"; path = "../../../../../modules/juce_video/capture/juce_CameraDevice.h"; sourceTree = "SOURCE_ROOT"; };
@@ -850,6 +852,7 @@
 		9FD8096E8A6E070EB0D3E6F2 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_win32_ActiveXComponent.cpp"; path = "../../../../../modules/juce_gui_extra/native/juce_win32_ActiveXComponent.cpp"; sourceTree = "SOURCE_ROOT"; };
 		A0189ED3EEAACC00AD4649EE = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = codebook.h; path = "../../../../../modules/juce_audio_formats/codecs/oggvorbis/libvorbis-1.3.2/lib/codebook.h"; sourceTree = "SOURCE_ROOT"; };
 		A067B55828A6944BF5F96152 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_ChoicePropertyComponent.cpp"; path = "../../../../../modules/juce_gui_basics/properties/juce_ChoicePropertyComponent.cpp"; sourceTree = "SOURCE_ROOT"; };
+		A06D19395CD8A48E64CE9E16 = {isa = PBXFileReference; lastKnownFileType = file.r; name = "juce_audio_plugin_client_RTAS.r"; path = "../../../../../modules/juce_audio_plugin_client/juce_audio_plugin_client_RTAS.r"; sourceTree = "SOURCE_ROOT"; };
 		A092D24F3C62D06CF5928A64 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = scales.h; path = "../../../../../modules/juce_audio_formats/codecs/oggvorbis/libvorbis-1.3.2/lib/scales.h"; sourceTree = "SOURCE_ROOT"; };
 		A0B50A729CB25919EE133A4D = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_AudioSourcePlayer.cpp"; path = "../../../../../modules/juce_audio_devices/sources/juce_AudioSourcePlayer.cpp"; sourceTree = "SOURCE_ROOT"; };
 		A0CB59F4AD5D67685CD8673D = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_android_SystemStats.cpp"; path = "../../../../../modules/juce_core/native/juce_android_SystemStats.cpp"; sourceTree = "SOURCE_ROOT"; };
@@ -1294,6 +1297,7 @@
 		F977E6E34D35E0FC5235BA25 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_TooltipClient.h"; path = "../../../../../modules/juce_gui_basics/mouse/juce_TooltipClient.h"; sourceTree = "SOURCE_ROOT"; };
 		F983B97EB7A763CA91C2B615 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AUInputElement.cpp; path = "../../../../../modules/juce_audio_plugin_client/AU/CoreAudioUtilityClasses/AUInputElement.cpp"; sourceTree = "SOURCE_ROOT"; };
 		F99AADA9ED5F73C39AE618ED = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = os.h; path = "../../../../../modules/juce_audio_formats/codecs/oggvorbis/libvorbis-1.3.2/lib/os.h"; sourceTree = "SOURCE_ROOT"; };
+		F9AD652235B91EB0693AB186 = {isa = PBXFileReference; lastKnownFileType = file.r; name = "juce_audio_plugin_client_AU.r"; path = "../../../../../modules/juce_audio_plugin_client/juce_audio_plugin_client_AU.r"; sourceTree = "SOURCE_ROOT"; };
 		F9AEBC8B0F4EAE709D0D5E80 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_BubbleMessageComponent.h"; path = "../../../../../modules/juce_gui_extra/misc/juce_BubbleMessageComponent.h"; sourceTree = "SOURCE_ROOT"; };
 		FA2B3781996DC52D0CFE3BA6 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_DynamicLibrary.h"; path = "../../../../../modules/juce_core/threads/juce_DynamicLibrary.h"; sourceTree = "SOURCE_ROOT"; };
 		FA5C3295E813D0648A2E7543 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = adler32.c; path = "../../../../../modules/juce_core/zip/zlib/adler32.c"; sourceTree = "SOURCE_ROOT"; };
@@ -1654,6 +1658,7 @@
 					5BB1BBCB34B72DCE9B16B695,
 					259860F50BF88025C9451A37, ); name = "juce_audio_formats"; sourceTree = "<group>"; };
 		C87C608E9A5C5E6E7E794076 = {isa = PBXGroup; children = (
+					86691FA1B2CDD3570ABEA9C7,
 					218937DFF1E643C7E9392D3D, ); name = AAX; sourceTree = "<group>"; };
 		0F13F4CD7D902B9D2DA69DC9 = {isa = PBXGroup; children = (
 					E9A6A98219D0E4514484593D,
@@ -1717,7 +1722,7 @@
 					3105E167622313C70055B903,
 					CB425D61E072DED92F6CAC85,
 					C6C096547CAD0C12FA4746CF, ); name = AU; sourceTree = "<group>"; };
-		7188C9AEA767393C223A5803 = {isa = PBXGroup; children = (
+		5A8AB44A44CEA32DC33D5765 = {isa = PBXGroup; children = (
 					F4E8427587734D0D2B94F4D8,
 					E09DC8AF27C6E40AB436E821,
 					6033F6DD0B905B8819C115E2,
@@ -1725,10 +1730,10 @@
 					F8AB7D10F5C9ABF34829AE8F,
 					F785317A2BB8414F5D8E2813,
 					D0A3F2265D323BB3F90F3DD5, ); name = RTAS; sourceTree = "<group>"; };
-		C681F67747E80C4D05C41413 = {isa = PBXGroup; children = (
+		A0C36FF148057D22D568BE59 = {isa = PBXGroup; children = (
 					F4D616BD3FAFE9587EC29FC6,
 					5202ABFCC92AA0AFBC9400BE, ); name = Standalone; sourceTree = "<group>"; };
-		5800B1C18680BF3EA8806892 = {isa = PBXGroup; children = (
+		3AE05782CAEEEB1F04B31F1A = {isa = PBXGroup; children = (
 					210E0DDAE66818EF2B278274,
 					94F3D0138EBB7EB31E15940C,
 					F4C02954B36F8FCE5D4E647C,
@@ -1738,22 +1743,23 @@
 					A29D254460762F8F6990D54C,
 					B9A21AE64CC4B86FC1F67061,
 					F35CA755BCEF635E1D3A905C, ); name = utility; sourceTree = "<group>"; };
-		4083DD4A6818D524406ECDF6 = {isa = PBXGroup; children = (
+		CBE8572BAED059334FB2FDF2 = {isa = PBXGroup; children = (
 					906428E1A9963444AF1B0D60,
 					69A29D8420DB0B53507E223D, ); name = VST; sourceTree = "<group>"; };
-		430F3673E2829D691E5A9ECF = {isa = PBXGroup; children = (
+		2CFD285766D4639C6B7C7457 = {isa = PBXGroup; children = (
 					CDE1B83C996A1861A93C93A7, ); name = VST3; sourceTree = "<group>"; };
 		3935AB4CC6A0A44A4A93B7E8 = {isa = PBXGroup; children = (
 					C87C608E9A5C5E6E7E794076,
 					3D494EE356FF362ACDC1098E,
-					7188C9AEA767393C223A5803,
-					C681F67747E80C4D05C41413,
-					5800B1C18680BF3EA8806892,
-					4083DD4A6818D524406ECDF6,
-					430F3673E2829D691E5A9ECF,
+					5A8AB44A44CEA32DC33D5765,
+					A0C36FF148057D22D568BE59,
+					3AE05782CAEEEB1F04B31F1A,
+					CBE8572BAED059334FB2FDF2,
+					2CFD285766D4639C6B7C7457,
 					163F8CC7509513B483860103,
 					AF02EDDBD4B4B8081DC18DA4,
 					9E2841D274BDF096C1567AA0,
+					F9AD652235B91EB0693AB186,
 					68810A5E034BC83F99EFE3B9,
 					B7CEA623FCCB463BF8058A7F,
 					9771DD4915BE1789A7993E69,
@@ -2839,8 +2845,7 @@
 					BCC02F39B2F24479D8F6DB50,
 					D30F58A3C82A7C61E6768EBE,
 					44AA2CDFC06F2E27F3BD6313,
-					7A6A889A32581FBE73645356,
-					12C24C2237E0F23FDCCCE953, ); name = Resources; sourceTree = "<group>"; };
+					7A6A889A32581FBE73645356, ); name = Resources; sourceTree = "<group>"; };
 		2D45B9382F864E0FC39A7D86 = {isa = PBXGroup; children = (
 					EE004DC5369648F9F4F967B5,
 					943B88ECAC8C127556319A56,
@@ -3272,7 +3277,7 @@
 		4B6CE3423D63B067B4CCB9CA = {isa = XCConfigurationList; buildConfigurations = (
 					D43C967D02EDDCC29FB7059C,
 					EEA93C1E6EEC110939D1685F, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
-		BE96E7C5FAB338297CC69BA9 = {isa = PBXAggregateTarget; buildConfigurationList = 4B6CE3423D63B067B4CCB9CA; dependencies = (
+		BE96E7C5FAB338297CC69BA9 = {isa = PBXAggregateTarget; buildConfigurationList = 4B6CE3423D63B067B4CCB9CA; buildPhases = (  ); buildRules = ( ); dependencies = (
 					211DD9687930134AF6E64FF0,
 					6FE20A9165A15D7BE98F2B99,
 					0D517069DB7201D47B168BEE,
@@ -3282,8 +3287,7 @@
 					BA984224A933EC837F514164,
 					AC5F1E6328DC16FF2891CB62, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
 		216E0D6AC94324AA60E8341F = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (
-					12C002E482A05AEA16654DF9,
-					A6EFA2CFF4D8C125C8AAEFB6, ); runOnlyForDeploymentPostprocessing = 0; };
+					12C002E482A05AEA16654DF9, ); runOnlyForDeploymentPostprocessing = 0; };
 		EEE027F86C42C2897FFAFAB4 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (
 					0D1C8A857D386C6BC5C99FA3, ); runOnlyForDeploymentPostprocessing = 0; };
 		88ED31A2FC837CDDC443C602 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (
@@ -3308,8 +3312,7 @@
 					23F878D56387ED4B67B9E2DF,
 					32B1624E3B1B34C461D60562, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
 		47F5AD1898E28C0A6D16C018 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (
-					12C002E482A05AEA16654DF9,
-					A6EFA2CFF4D8C125C8AAEFB6, ); runOnlyForDeploymentPostprocessing = 0; };
+					12C002E482A05AEA16654DF9, ); runOnlyForDeploymentPostprocessing = 0; };
 		FE7603D4FD2A5265B17C5CDB = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (
 					6D0FB6DF3B238687E64CA059, ); runOnlyForDeploymentPostprocessing = 0; };
 		E3794423504E5A68368E60FB = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (
@@ -3334,8 +3337,9 @@
 					4130388B36B3B506391E717A,
 					B3B550855CF90C491B1B3921, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
 		2547749F251ADA67558CFBC5 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (
-					12C002E482A05AEA16654DF9,
-					A6EFA2CFF4D8C125C8AAEFB6, ); runOnlyForDeploymentPostprocessing = 0; };
+					12C002E482A05AEA16654DF9, ); runOnlyForDeploymentPostprocessing = 0; };
+		F38684DBAA310B29B5B2598B = {isa = PBXRezBuildPhase; buildActionMask = 2147483647; files = (
+					5242C773D354EA0B2527D4B8, ); runOnlyForDeploymentPostprocessing = 0; };
 		2B362E865E39D8FBBEF5836E = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (
 					65D4B3952523E1D9729D5696,
 					297C90DB48F08189C5E161F6, ); runOnlyForDeploymentPostprocessing = 0; };
@@ -3356,6 +3360,7 @@
 					15165888F33A50CEEAF270C7, ); runOnlyForDeploymentPostprocessing = 0; };
 		5B796CD6929336C2CDEDBCD1 = {isa = PBXNativeTarget; buildConfigurationList = 1A6AAD356017FB36162EB851; buildPhases = (
 					2547749F251ADA67558CFBC5,
+					F38684DBAA310B29B5B2598B,
 					2B362E865E39D8FBBEF5836E,
 					0DF7A849451483A06FA065B3, ); buildRules = ( ); dependencies = (
 					488C1DC0415EFF5825C77F33, ); name = "NoiseGate (AU)"; productName = NoiseGate; productReference = 8D84B63F343660AEE31FD166; productType = "com.apple.product-type.bundle"; };
@@ -3363,8 +3368,7 @@
 					6597D0E1B573ECB84853415C,
 					BCA3F1D08B6DEDD8120DDF25, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
 		547175C3907E0E0E4318B03E = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (
-					12C002E482A05AEA16654DF9,
-					A6EFA2CFF4D8C125C8AAEFB6, ); runOnlyForDeploymentPostprocessing = 0; };
+					12C002E482A05AEA16654DF9, ); runOnlyForDeploymentPostprocessing = 0; };
 		60B6674FAE4C8F988F0F1086 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (
 					FCE06A0BAC628295014D8729, ); runOnlyForDeploymentPostprocessing = 0; };
 		A47A37CF689DBA8E163F1A4D = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (

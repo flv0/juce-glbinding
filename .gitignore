@@ -20,6 +20,7 @@
 *.VC.opendb
 xcuserdata
 *.xccheckout
+*.xcscmblueprint
 contents.xcworkspacedata
 .DS_Store
 .svn
@@ -27,6 +28,7 @@ profile
 **/MacOSX/build
 **/iOS/build
 **/Linux/build
+**/LinuxMakefile/build
 **/VisualStudio2005/Debug
 **/VisualStudio2005/Release
 **/VisualStudio2008/Debug
