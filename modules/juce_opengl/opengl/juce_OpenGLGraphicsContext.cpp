@@ -22,6 +22,8 @@
   ==============================================================================
 */
 
+extern void (*clearOpenGLGlyphCache)(); // declared in juce_graphics
+
 namespace OpenGLRendering
 {
 
@@ -1586,7 +1588,7 @@ public:
         }
     }
 
-    typedef RenderingHelpers::GlyphCache <RenderingHelpers::CachedGlyphEdgeTable <SavedState>, SavedState> GlyphCacheType;
+    typedef RenderingHelpers::GlyphCache<RenderingHelpers::CachedGlyphEdgeTable<SavedState>, SavedState> GlyphCacheType;
 
     void drawGlyph (int glyphNumber, const AffineTransform& trans)
     {
@@ -1764,9 +1766,15 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NonShaderContext)
 };
 
-LowLevelGraphicsContext* createOpenGLContext (const Target&);
-LowLevelGraphicsContext* createOpenGLContext (const Target& target)
+static void clearOpenGLGlyphCacheCallback()
 {
+    SavedState::GlyphCacheType::getInstance().reset();
+}
+
+static LowLevelGraphicsContext* createOpenGLContext (const Target& target)
+{
+    clearOpenGLGlyphCache = clearOpenGLGlyphCacheCallback;
+
     if (target.context.areShadersAvailable())
         return new ShaderContext (target);
 
@@ -1789,16 +1797,8 @@ LowLevelGraphicsContext* createOpenGLGraphicsContext (OpenGLContext& context, Op
 
 LowLevelGraphicsContext* createOpenGLGraphicsContext (OpenGLContext& context, unsigned int frameBufferID, int width, int height)
 {
-    using namespace OpenGLRendering;
     return OpenGLRendering::createOpenGLContext (OpenGLRendering::Target (context, frameBufferID, width, height));
 }
-
-void clearOpenGLGlyphCache();
-void clearOpenGLGlyphCache()
-{
-    OpenGLRendering::SavedState::GlyphCacheType::getInstance().reset();
-}
-
 
 //==============================================================================
 struct CustomProgram  : public ReferenceCountedObject,
@@ -1847,7 +1847,7 @@ struct CustomProgram  : public ReferenceCountedObject,
 OpenGLGraphicsContextCustomShader::OpenGLGraphicsContextCustomShader (const String& fragmentShaderCode)
     : code (String (JUCE_DECLARE_VARYING_COLOUR
                     JUCE_DECLARE_VARYING_PIXELPOS
-                    "\n" JUCE_MEDIUMP " float pixelAlpha = frontColour.a;\n") + fragmentShaderCode),
+                    "\n#define pixelAlpha frontColour.a\n") + fragmentShaderCode),
       hashName (String::toHexString (fragmentShaderCode.hashCode64()) + "_shader")
 {
 }

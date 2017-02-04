@@ -1,12 +1,26 @@
 /*
  ==============================================================================
 
- Arpeggiator.cpp
- Created: 23 Nov 2015 3:08:33pm
- Author:  Fabian Renn
+ This file is part of the JUCE library.
+ Copyright (c) 2015 - ROLI Ltd.
+
+ Permission is granted to use this software under the terms of either:
+ a) the GPL v2 (or any later version)
+ b) the Affero GPL v3
+
+ Details of these licenses can be found at: www.gnu.org/licenses
+
+ JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
+ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+ ------------------------------------------------------------------------------
+
+ To release a closed-source product which uses JUCE, commercial licenses are
+ available: visit www.juce.com for more information.
 
  ==============================================================================
- */
+*/
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "../../GenericEditor.h"
@@ -20,21 +34,12 @@ public:
 
     //==============================================================================
     Arpeggiator()
+        : AudioProcessor (BusesProperties()) // add no audio buses at all
     {
         addParameter (speed = new AudioParameterFloat ("speed", "Arpeggiator Speed", 0.0, 1.0, 0.5));
     }
 
     ~Arpeggiator() {}
-
-    //==============================================================================
-    bool setPreferredBusArrangement (bool isInputBus, int busIndex,
-                                     const AudioChannelSet& preferred) override
-    {
-        ignoreUnused (isInputBus, busIndex, preferred);
-
-        // we don't support any audio buses
-        return false;
-    }
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override
@@ -59,7 +64,7 @@ public:
         const int numSamples = buffer.getNumSamples();
 
         // get note duration
-        const int noteDuration = static_cast<int> (std::ceilf (rate * 0.25f * (0.1f + (1.0f - (*speed)))));
+        const int noteDuration = static_cast<int> (std::ceil (rate * 0.25f * (0.1f + (1.0f - (*speed)))));
 
         MidiMessage msg;
         int ignore;
@@ -95,15 +100,17 @@ public:
     }
 
     //==============================================================================
+    bool isMidiEffect() const override                  { return true; }
+
+    //==============================================================================
     AudioProcessorEditor* createEditor() override { return new GenericEditor (*this); }
     bool hasEditor() const override               { return true;   }
 
     //==============================================================================
     const String getName() const override               { return "Arpeggiator"; }
 
-    bool acceptsMidi() const override                   { return false; }
-    bool producesMidi() const override                  { return false; }
-    bool silenceInProducesSilenceOut() const override   { return true; }
+    bool acceptsMidi() const override                   { return true; }
+    bool producesMidi() const override                  { return true; }
     double getTailLengthSeconds() const override        { return 0; }
 
     //==============================================================================

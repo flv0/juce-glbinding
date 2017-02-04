@@ -1,9 +1,23 @@
 /*
  ==============================================================================
 
- MultiOutSynth.cpp
- Created: 23 Nov 2015 3:08:33pm
- Author:  Fabian Renn
+ This file is part of the JUCE library.
+ Copyright (c) 2015 - ROLI Ltd.
+
+ Permission is granted to use this software under the terms of either:
+ a) the GPL v2 (or any later version)
+ b) the Affero GPL v3
+
+ Details of these licenses can be found at: www.gnu.org/licenses
+
+ JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
+ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+ ------------------------------------------------------------------------------
+
+ To release a closed-source product which uses JUCE, commercial licenses are
+ available: visit www.juce.com for more information.
 
  ==============================================================================
  */
@@ -25,16 +39,24 @@ public:
 
     //==============================================================================
     MultiOutSynth()
+        : AudioProcessor (BusesProperties()
+                          .withOutput ("Output #1",  AudioChannelSet::stereo(), true)
+                          .withOutput ("Output #2",  AudioChannelSet::stereo(), false)
+                          .withOutput ("Output #3",  AudioChannelSet::stereo(), false)
+                          .withOutput ("Output #4",  AudioChannelSet::stereo(), false)
+                          .withOutput ("Output #5",  AudioChannelSet::stereo(), false)
+                          .withOutput ("Output #6",  AudioChannelSet::stereo(), false)
+                          .withOutput ("Output #7",  AudioChannelSet::stereo(), false)
+                          .withOutput ("Output #8",  AudioChannelSet::stereo(), false)
+                          .withOutput ("Output #9",  AudioChannelSet::stereo(), false)
+                          .withOutput ("Output #10", AudioChannelSet::stereo(), false)
+                          .withOutput ("Output #11", AudioChannelSet::stereo(), false)
+                          .withOutput ("Output #12", AudioChannelSet::stereo(), false)
+                          .withOutput ("Output #13", AudioChannelSet::stereo(), false)
+                          .withOutput ("Output #14", AudioChannelSet::stereo(), false)
+                          .withOutput ("Output #15", AudioChannelSet::stereo(), false)
+                          .withOutput ("Output #16", AudioChannelSet::stereo(), false))
     {
-        // The base class constructor will already add a main stereo output bus
-        // If you want to add your own main channel then simply call clear the
-        // output buses (busArrangement.outputBuses.clear()) and then add your own
-
-        // Add additional output buses but disable these by default
-        for (int busNr = 1; busNr < maxMidiChannel; ++busNr)
-            busArrangement.outputBuses.add (AudioProcessorBus (String ("Output #") += String (busNr + 1), AudioChannelSet::disabled()));
-
-
         // initialize other stuff (not related to buses)
         formatManager.registerBasicFormats();
 
@@ -52,22 +74,8 @@ public:
     ~MultiOutSynth() {}
 
     //==============================================================================
-    bool setPreferredBusArrangement (bool isInputBus, int busIndex,
-                                     const AudioChannelSet& preferred) override
-    {
-        const int numChannels = preferred.size();
-        const bool isMainBus = (busIndex == 0);
-
-        // do not allow disabling the main output bus
-        if (isMainBus && preferred.isDisabled()) return false;
-
-        // only support mono or stereo (or disabling) buses
-        if (numChannels > 2) return false;
-
-
-        // pass the call on to the base class
-        return AudioProcessor::setPreferredBusArrangement (isInputBus, busIndex, preferred);
-    }
+    bool canAddBus    (bool isInput) const override   { return (! isInput && getBusCount (false) < maxMidiChannel); }
+    bool canRemoveBus (bool isInput) const override   { return (! isInput && getBusCount (false) > 1); }
 
     //==============================================================================
     void prepareToPlay (double newSampleRate, int samplesPerBlock) override
@@ -82,12 +90,11 @@ public:
 
     void processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiBuffer) override
     {
-        buffer.clear();
-
-        for (int busNr = 0; busNr < maxMidiChannel; ++busNr)
+        const int busCount = getBusCount (false);
+        for (int busNr = 0; busNr < busCount; ++busNr)
         {
             MidiBuffer midiChannelBuffer = filterMidiMessagesForChannel (midiBuffer, busNr + 1);
-            AudioSampleBuffer audioBusBuffer = busArrangement.getBusBuffer (buffer, false, busNr);
+            AudioSampleBuffer audioBusBuffer = getBusBuffer (buffer, false, busNr);
 
             synth [busNr]->renderNextBlock (audioBusBuffer, midiChannelBuffer, 0, audioBusBuffer.getNumSamples());
         }
@@ -101,7 +108,6 @@ public:
     const String getName() const override               { return "Gain PlugIn"; }
     bool acceptsMidi() const override                   { return false; }
     bool producesMidi() const override                  { return false; }
-    bool silenceInProducesSilenceOut() const override   { return true; }
     double getTailLengthSeconds() const override        { return 0; }
     int getNumPrograms() override                          { return 1; }
     int getCurrentProgram() override                       { return 0; }
